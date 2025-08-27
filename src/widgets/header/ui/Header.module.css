@@ -1,0 +1,35 @@
+/* src/widgets/header/ui/Header.module.css */
+.header {
+    background-color: #142037;
+    color: #ffffff;
+}
+.inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lc {
+    display: flex;
+}
+
+.lc>*:not(:last-child) {
+    margin-right: 1rem;
+}
+
+.nav {
+    display: flex;
+}
+
+.nav a {
+    color: #ffffff;
+}
+.nav a:hover {
+    text-decoration: underline;
+}
+.nav a:not(:last-child) {
+    margin-right: 1rem;
+}

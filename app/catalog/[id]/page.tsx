@@ -32,15 +32,16 @@ export default async function CategoryByIdPage({ params }: { params: { id: strin
         productsData = await fetchProductsByCategoryId(node.id, { page: 1, pageSize: 20 });
     }
 
-    const productItems =
-        productsData?.items.map((p) => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            currencyCode: p.currencyCode,
-            imageUrl: p.images?.find((i) => i.isMain)?.imageUrl,
-            brandName: p.brandName,
-        })) ?? [];
+    const productItems = productsData?.items.map((p) => ({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        currencyCode: p.currencyCode,
+        imageUrl: p.images?.find((i) => i.isMain)?.imageUrl ,
+        brandName: p.brandName,
+        hrefName: `/product/${p.id}`, // можно опустить, если в карточке есть дефолт
+    })) ?? [];
+
 
     return (
         <section className="mx-auto max-w-7xl px-4 py-8">

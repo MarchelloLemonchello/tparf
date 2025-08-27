@@ -23,7 +23,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     'inline-flex items-center justify-center rounded-md transition',
                     fullWidth && 'w-full',
                     {
-                        primary: 'bg-blue-600 text-white hover:bg-blue-700',
+                        primary: 'button-primary',
                         secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
                         ghost: 'bg-transparent hover:bg-gray-50',
                         link: 'bg-transparent text-blue-600 hover:underline',

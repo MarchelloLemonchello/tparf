@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-yellow1: #DDD521;
+  --primary-yellow2: #EBE31B;
+  --primary-yellow3: #545006;
+  --primary-blue: #142037;
+
 }
 
 @theme inline {
@@ -14,7 +19,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ededed;
+    --background: #ffffff;
     --foreground: #0a0a0a;
   }
 }
@@ -23,4 +28,13 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.button-primary {
+  background: var(--primary-yellow1);
+  color: var(--primary-yellow3);
+}
+
+.button-primary:hover {
+  background: var(--primary-yellow2);
 }
