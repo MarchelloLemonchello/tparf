@@ -5,7 +5,8 @@ import {Button} from "@/shared/ui/button/ui/Button";
 export default function NotFound() {
     return (
         <section className="mx-auto max-w-3xl px-4 py-16 text-center">
-            <h1 className="text-3xl font-bold mb-3">Страница не найдена</h1>
+            <img className="block m-auto mb-8 w-3xs" src="/404.png" alt="404"/>
+            <h1 className="text-3xl mb-4 font-bold mb-3">Страница не найдена</h1>
             <p className="text-gray-600 mb-6">
                 Запрошенный адрес недоступен или был перемещён.
             </p>
