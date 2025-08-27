@@ -21,3 +21,5 @@ export async function fetchProductById(id: string): Promise<ProductDetail> {
     const { data } = await api.get<ProductDetail>(`products/${id}`);
     return data;
 }
+
+

@@ -63,11 +63,14 @@ export type ProductsResponse = {
     pageSize: number;
 };
 
-export async function fetchProductsByCategoryId(categoryId: string, params?: { page?: number; pageSize?: number }) {
+export async function fetchProductsByCategoryId(
+    categoryId: string,
+    params?: { page?: number; pageSize?: number }
+) {
     const { page = 1, pageSize = 20 } = params ?? {};
     const { data } = await api.get<ProductsResponse>(`categories/${categoryId}/products`, {
-        params: { page, pageSize },
-    })
-
+        params: { Page: page, PageSize: pageSize }, // важно: с заглавной буквы, как требует API
+    });
     return data;
 }
+

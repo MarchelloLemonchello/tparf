@@ -10,6 +10,7 @@ export default async function CatalogRootPage() {
         id: cat.id,
         name: cat.name,
         childrenCount: cat.children?.length ?? undefined,
+        imageUrl: cat.logoUrl ?? null, // добавлено
     }));
 
     return (

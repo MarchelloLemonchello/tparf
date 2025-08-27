@@ -3,7 +3,7 @@
 // В дальнейшем здесь появятся контролы фильтрации и синхронизация с поисковыми параметрами
 export function ProductFilters() {
     return (
-        <aside className="mb-4 rounded border bg-white p-4">
+        <aside className="rounded border bg-white p-4 mr-4">
             <div className="font-medium mb-2">Фильтры</div>
             <div className="text-sm text-gray-500">Здесь будут параметры фильтрации (бренд, цена и т.д.).</div>
         </aside>

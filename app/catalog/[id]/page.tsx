@@ -6,10 +6,17 @@ import { Breadcrumbs } from '@/widgets/breadcrumbs/ui/Breadcrumbs';
 import { CategoryGrid } from '@/entities/category/ui/CategoryGrid';
 import { ProductFilters } from '@/widgets/product-filters/ui/ProductFilters';
 import { ProductGrid } from '@/entities/product/ui/ProductGrid';
+import { Pagination } from '@/widgets/pagination/ui/Pagination';
 
 export const revalidate = 300;
 
-export default async function CategoryByIdPage({ params }: { params: { id: string } }) {
+export default async function CategoryByIdPage({
+                                                   params,
+                                                   searchParams,
+                                               }: {
+    params: { id: string };
+    searchParams: { Page?: string; PageSize?: string };
+}) {
     let node;
     try {
         node = await fetchCategoryById(params.id);
@@ -24,24 +31,30 @@ export default async function CategoryByIdPage({ params }: { params: { id: strin
         id: child.id,
         name: child.name,
         childrenCount: child.children?.length ?? undefined,
+        imageUrl: child.logoUrl ?? null, // добавлено
     }));
 
-    // ИЗМЕНЕНО: товары запрашиваются уже с уровня 1
+    // Читаем пагинацию из URL
+    const page = Number(searchParams.Page ?? 1);
+    const pageSize = Number(searchParams.PageSize ?? 20);
+
+    // Товары с уровня 1 и выше
     let productsData = null as Awaited<ReturnType<typeof fetchProductsByCategoryId>> | null;
     if (node.level >= 1) {
-        productsData = await fetchProductsByCategoryId(node.id, { page: 1, pageSize: 20 });
+        productsData = await fetchProductsByCategoryId(node.id, { page, pageSize });
     }
 
-    const productItems = productsData?.items.map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: p.price,
-        currencyCode: p.currencyCode,
-        imageUrl: p.images?.find((i) => i.isMain)?.imageUrl ,
-        brandName: p.brandName,
-        hrefName: `/product/${p.id}`, // можно опустить, если в карточке есть дефолт
-    })) ?? [];
+    const productItems =
+        productsData?.items.map((p) => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            currencyCode: p.currencyCode,
+            imageUrl: p.images?.find((i) => i.isMain)?.imageUrl ,
+            brandName: p.brandName,
+        })) ?? [];
 
+    const totalCount = productsData?.totalCount ?? 0;
 
     return (
         <section className="mx-auto max-w-7xl px-4 py-8">
@@ -49,26 +62,33 @@ export default async function CategoryByIdPage({ params }: { params: { id: strin
             <h1 className="text-2xl font-semibold mb-4">{node.name}</h1>
 
             {categoryItems.length > 0 && (
-                <>
+                <div className="mb-8">
                     <h2 className="text-lg font-medium mb-3">Подкатегории</h2>
-                    {/* parentLevel равен уровню текущего узла */}
                     <CategoryGrid items={categoryItems} parentLevel={node.level} />
-                </>
+                </div>
             )}
 
-            {/* ИЗМЕНЕНО: секция товаров показывается с уровня 1 */}
             {node.level >= 1 && (
                 <>
-                    <div className="mt-8">
-                        <ProductFilters />
-                    </div>
-                    <div className="mt-4">
-                        {productItems.length > 0 ? (
+                    <div className="flex">
+                    <ProductFilters />
+
+                    {productItems.length > 0 ? (
+                        <>
                             <ProductGrid items={productItems} />
-                        ) : (
-                            <p className="text-gray-600">Товары не найдены.</p>
-                        )}
+                            {/* Пагинация под гридом */}
+
+                        </>
+                    ) : (
+                        <p className="text-gray-600">Товары не найдены.</p>
+                    )}
                     </div>
+                    <Pagination
+                        basePath={`/catalog/${node.id}`}
+                        page={page}
+                        pageSize={pageSize}
+                        totalCount={totalCount}
+                    />
                 </>
             )}
         </section>
