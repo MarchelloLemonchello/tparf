@@ -3,31 +3,30 @@
 
 import Link from 'next/link';
 import { CategoryCrumb } from '@/entities/category/model/types';
-import { buildCategoryPathFromCrumbs, catalogRootPath } from '@/shared/lib/routing';
-import clsx from 'clsx';
 
 type Props = {
-    crumbs: CategoryCrumb[]; // массив от корня к текущему уровню
+    crumbs: CategoryCrumb[]; // [{id, title}] из node.pathItems
     className?: string;
 };
 
 export function Breadcrumbs({ crumbs, className }: Props) {
-    // Собираем элементы: [Каталог] + переданные крошки
+    // Формируем полный список: "Каталог" + элементы pathItems
     const fullCrumbs = [
-        { id: '', title: 'Каталог', href: catalogRootPath },
-        ...crumbs.map((c, idx) => {
-            const path = buildCategoryPathFromCrumbs(crumbs.slice(0, idx + 1));
-            return { id: c.id, title: c.title, href: path };
-        }),
+        { id: '', title: 'Каталог', href: '/catalog' }, // корень каталога
+        ...crumbs.map((c) => ({
+            id: c.id,
+            title: c.title,
+            href: `/catalog/${c.id}`, // абсолютный путь по id
+        })),
     ];
 
     return (
-        <nav aria-label="breadcrumbs" className={clsx('text-sm text-gray-600', className)}>
-            <ol className="flex flex-wrap items-center gap-2">
+        <nav aria-label="breadcrumbs" className={className}>
+            <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
                 {fullCrumbs.map((c, i) => {
                     const isLast = i === fullCrumbs.length - 1;
                     return (
-                        <li key={`${c.title}-${i}`} className="flex items-center">
+                        <li key={`${c.id || 'root'}-${i}`} className="flex items-center">
                             {isLast ? (
                                 <span className="font-medium">{c.title}</span>
                             ) : (
