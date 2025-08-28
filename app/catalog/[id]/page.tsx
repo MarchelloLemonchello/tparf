@@ -71,7 +71,7 @@ export default async function CategoryByIdPage({
             {node.level >= 1 && (
                 <>
                     <div className="flex">
-                    <ProductFilters />
+                    {/*<ProductFilters />*/}
 
                     {productItems.length > 0 ? (
                         <>
