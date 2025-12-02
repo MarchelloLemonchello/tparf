@@ -23,7 +23,7 @@ interface CartPageClientProps {
 }
 
 export default function CartPageClient({ cart, user }: CartPageClientProps) {
-    const token = user.token; // теперь токен из user
+    const token = user.token;
     const setCart = useCartStore((state) => state.setCart);
     const cartState = useCartStore((state) => state.cart);
 
@@ -31,13 +31,11 @@ export default function CartPageClient({ cart, user }: CartPageClientProps) {
         setCart(cart);
     }, [cart, setCart]);
 
-    // Безопасное получение currencyCode
     const currencyCode = useMemo(() => {
-        const firstItem = cartState?.items[0]?.product || cart.items[0]?.product;
+        const firstItem = cartState?.items[0] || cart.items[0];
         return firstItem?.currencyCode || 'RUB';
     }, [cartState, cart]);
 
-    // Расчёт totalAmount на клиенте
     const totalAmount = useMemo(() => {
         const currentItems = cartState?.items || cart.items;
         return currentItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -53,9 +51,11 @@ export default function CartPageClient({ cart, user }: CartPageClientProps) {
             ) : (
                 <>
                     <CartItemsList items={currentCart.items} token={token} />
+                    {/* ✅ Передаем token в CartSummary */}
                     <CartSummary
                         totalAmount={totalAmount}
                         currencyCode={currencyCode}
+                        token={token}
                     />
                 </>
             )}

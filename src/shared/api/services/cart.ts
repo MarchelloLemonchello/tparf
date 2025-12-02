@@ -4,6 +4,7 @@ import type { CartResponse } from '@/shared/store/useCartStore';
 
 // GET /cart — получить корзину (требует токен)
 export async function getCart(token: string): Promise<CartResponse> {
+    console.log('получить корзину')
     const { data } = await api.get<CartResponse>('cart', {
         headers: { Authorization: `Bearer ${token}` },
     });

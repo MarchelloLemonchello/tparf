@@ -1,11 +1,21 @@
 // app/orders/page.tsx
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getUserFromCookie } from '@/shared/server/auth';
+import { getOrders } from '@/shared/api/services/orders';
 import OrdersPageClient from './OrdersPageClient';
 
 export default async function OrdersPage() {
-    const token = (await cookies()).get('auth_token')?.value;
-    if (!token) redirect('/auth/login');
+    const user = await getUserFromCookie();
+    if (!user || !user.token) redirect('/auth/login');
 
-    return <OrdersPageClient token={token} />;
+    try {
+        const orders = await getOrders(user.token);
+        return <OrdersPageClient orders={orders} user={user} />;
+    } catch (err: any) {
+        if (err?.response?.status === 401 || err?.response?.status === 403) {
+            redirect('/auth/login');
+        }
+        throw err;
+    }
 }
+
