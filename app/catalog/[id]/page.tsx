@@ -19,6 +19,7 @@ export default async function CategoryByIdPage({
 }) {
     let node;
     try {
+
         node = await fetchCategoryById(params.id);
     } catch (e: any) {
         if (e?.response?.status === 404) notFound();
@@ -27,13 +28,15 @@ export default async function CategoryByIdPage({
 
     const crumbs = node.pathItems.map((p) => ({ id: p.id, title: p.name }));
 
+
     const categoryItems = node.children.map((child) => ({
         id: child.id,
         name: child.name,
         childrenCount: child.children?.length ?? undefined,
         imageUrl: child.logoUrl ?? null, // добавлено
     }));
-
+    // console.log('items')
+    // console.log(categoryItems)
     // Читаем пагинацию из URL
     const page = Number(searchParams.Page ?? 1);
     const pageSize = Number(searchParams.PageSize ?? 20);
@@ -43,7 +46,6 @@ export default async function CategoryByIdPage({
     if (node.level >= 1) {
         productsData = await fetchProductsByCategoryId(node.id, { page, pageSize });
     }
-
     const productItems =
         productsData?.items.map((p) => ({
             id: p.id,
@@ -55,7 +57,6 @@ export default async function CategoryByIdPage({
         })) ?? [];
 
     const totalCount = productsData?.totalCount ?? 0;
-
     return (
         <section className="mx-auto max-w-7xl px-4 py-8">
             <Breadcrumbs crumbs={crumbs} className="mb-6" />

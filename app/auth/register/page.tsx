@@ -1,4 +1,5 @@
 import { RegisterForm } from '@/features/auth/ui/RegisterForm';
+import Link from 'next/link';
 
 export const metadata = { title: 'Регистрация' };
 
