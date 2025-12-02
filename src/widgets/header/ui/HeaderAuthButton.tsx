@@ -18,7 +18,7 @@ export function HeaderAuthButton({ user }: HeaderAuthButtonProps) {
     }
     return (
         <Button>
-            <Link href="/auth/login">Корзина2</Link>
+            <Link href="/auth/login">Корзина</Link>
         </Button>
     );
 }

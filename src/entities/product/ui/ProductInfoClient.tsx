@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { Minus, Plus, ShoppingCart, Edit3 } from 'lucide-react';
 import { useCartStore } from '@/shared/store/useCartStore';
 import { addToCart, updateCartItem, removeFromCart, getCart } from '@/shared/api/services/cart';
+import { createOneClickOrder } from '@/shared/api/services/orders'; // ✅ Импорт
 import { toast } from 'sonner';
 import { AddToCartModal } from '@/entities/cart/ui/AddToCartModal';
 import { QuickQuantityModal } from '@/entities/cart/ui/QuickQuantityModal';
+import { OneClickBuyModal } from '@/entities/cart/ui/OneClickBuyModal'; // ✅ Новый модал
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -35,10 +37,11 @@ export function ProductInfoClient({
                                       cartInfo: initialCartInfo,
                                       user
                                   }: ProductInfoClientProps) {
-    const router = useRouter(); // ✅ Для редиректа
+    const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [showAddModal, setShowAddModal] = useState(false);
     const [showQuickModal, setShowQuickModal] = useState(false);
+    const [showOneClickModal, setShowOneClickModal] = useState(false); // ✅ Новый модал
     const token = user?.token;
 
     const cart = useCartStore(state => state.cart);
@@ -70,7 +73,6 @@ export function ProductInfoClient({
     const isCurrentlyInCart = localCartInfo?.inCart || isInCart;
     const currentItemQuantity = localCartInfo?.quantity || currentQuantity;
 
-    // ✅ Универсальная функция редиректа на логин
     const redirectToLogin = () => {
         toast.info('Для работы с корзиной необходимо авторизоваться');
         router.push('/auth/login');
@@ -107,7 +109,7 @@ export function ProductInfoClient({
                 if (newQuantity <= 0) {
                     await removeFromCart(token, productId);
                     removeItem(productId);
-                    toast.success('Товар удален из корзине');
+                    toast.success('Товар удален из корзины');
                 } else {
                     await updateCartItem(token, productId, newQuantity);
                     updateQuantity(productId, newQuantity);
@@ -128,13 +130,31 @@ export function ProductInfoClient({
         setShowQuickModal(false);
     };
 
-    const handleOneClickBuy = () => {
+    // ✅ Логика "Купить в 1 клик"
+    const handleOneClickBuy = (quantity: number) => {
         if (!token) {
             redirectToLogin();
             return;
         }
-        // TODO: Логика "Купить в 1 клик"
-        toast.info('Скоро будет реализовано');
+
+        startTransition(async () => {
+            try {
+                // ✅ Создаем заказ в 1 клик
+                const newOrder = await createOneClickOrder(token, [{
+                    productId,
+                    quantity
+                }]);
+
+                toast.success(`Заказ №${newOrder.orderNumber} успешно создан!`);
+                setShowOneClickModal(false);
+
+                // ✅ Перенаправляем на страницу заказов
+                router.push('/orders');
+            } catch (error: any) {
+                console.error('Ошибка создания заказа:', error);
+                toast.error(error.response?.data?.message || 'Ошибка при создании заказа');
+            }
+        });
     };
 
     // Товар НЕ в корзине
@@ -162,9 +182,9 @@ export function ProductInfoClient({
                             Добавить в корзину
                         </button>
                         <button
-                            onClick={handleOneClickBuy}
+                            onClick={() => setShowOneClickModal(true)}
                             disabled={isPending}
-                            className="h-11 px-6 rounded-xl bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-lg hover:shadow-xl"
+                            className="h-11 px-6 rounded-xl bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:from-orange-700 hover:to-orange-800 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-lg hover:shadow-xl"
                         >
                             Купить в 1 клик
                         </button>
@@ -175,6 +195,13 @@ export function ProductInfoClient({
                     isOpen={showAddModal}
                     onClose={() => setShowAddModal(false)}
                     onAddToCart={handleAddToCart}
+                    loading={isPending}
+                />
+                <OneClickBuyModal
+                    isOpen={showOneClickModal}
+                    onClose={() => setShowOneClickModal(false)}
+                    productName={name}
+                    onOneClickBuy={handleOneClickBuy}
                     loading={isPending}
                 />
             </>
@@ -224,9 +251,9 @@ export function ProductInfoClient({
                         </button>
                     </div>
                     <button
-                        onClick={handleOneClickBuy}
+                        onClick={() => setShowOneClickModal(true)}
                         disabled={isPending}
-                        className="flex-1 h-11 px-6 rounded-xl bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-lg hover:shadow-xl"
+                        className="flex-1 h-11 px-6 rounded-xl bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:from-orange-700 hover:to-orange-800 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-lg hover:shadow-xl"
                     >
                         Купить в 1 клик
                     </button>
@@ -245,6 +272,14 @@ export function ProductInfoClient({
                 isOpen={showAddModal}
                 onClose={() => setShowAddModal(false)}
                 onAddToCart={handleAddToCart}
+                loading={isPending}
+            />
+
+            <OneClickBuyModal
+                isOpen={showOneClickModal}
+                onClose={() => setShowOneClickModal(false)}
+                productName={name}
+                onOneClickBuy={handleOneClickBuy}
                 loading={isPending}
             />
         </>

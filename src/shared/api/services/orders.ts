@@ -40,6 +40,16 @@ export type OrdersResponse = {
     pageSize: number;
 };
 
+
+export type OneClickOrderItem = {
+    productId: string;
+    quantity: number;
+};
+
+export type OneClickOrderRequest = {
+    items: OneClickOrderItem[];
+};
+
 export async function getOrders(token: string): Promise<OrdersResponse> {
     const { data } = await api.get<OrdersResponse>('orders', {
         headers: { Authorization: `Bearer ${token}` },
@@ -49,6 +59,13 @@ export async function getOrders(token: string): Promise<OrdersResponse> {
 
 export async function createOrderFromCart(token: string): Promise<Order> {
     const { data } = await api.post<Order>('orders/from-cart', {}, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+
+export async function createOneClickOrder(token: string, items: OneClickOrderItem[]): Promise<Order> {
+    const { data } = await api.post<Order>('orders', { items }, {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;
