@@ -35,9 +35,56 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'cdn.ibot.by',
                 pathname: '/**',
-            }
+            },
+
+            // новые из списка
+            {
+                protocol: 'https',
+                hostname: 'dev.advanta-m.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'argut.net',
+                pathname: '/upload/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'berger.store',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'championtool.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'farseer.su',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'yml.grmeh.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.hightech-instrument.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'opteltreco.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'vsesvetodiody.ru',
+                pathname: '/**',
+            },
         ],
-    }
+    },
 };
 
 export default nextConfig;
