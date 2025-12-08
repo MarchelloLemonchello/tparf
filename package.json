@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:ignore": "next lint --max-warnings 999 && next build",
     "start": "next start",
     "lint": "eslint"
   },

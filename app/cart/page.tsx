@@ -12,8 +12,9 @@ export default async function CartPage() {
     try {
         const cart = await getCart(token);
         return <CartPageClient cart={cart} user={user} />;
-    } catch (err: any) {
-        if (err?.response?.status === 401 || err?.response?.status === 403) {
+    } catch (err: unknown) {
+        const error = err as Error & { response?: { status: number } };
+        if (error.response?.status === 401 || error.response?.status === 403) {
             redirect('/auth/login');
         }
         throw err;

@@ -6,8 +6,8 @@ import OrdersList from '@/entities/orders/ui/OrdersList';
 import Link from 'next/link';
 
 interface OrdersPageClientProps {
-    orders: any; // OrdersResponse
-    user: any;
+    orders: unknown; // OrdersResponse
+    user: unknown;
 }
 
 export default function OrdersPageClient({ orders, user }: OrdersPageClientProps) {

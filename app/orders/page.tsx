@@ -11,7 +11,7 @@ export default async function OrdersPage() {
     try {
         const orders = await getOrders(user.token);
         return <OrdersPageClient orders={orders} user={user} />;
-    } catch (err: any) {
+    } catch (err: unknown) {
         if (err?.response?.status === 401 || err?.response?.status === 403) {
             redirect('/auth/login');
         }

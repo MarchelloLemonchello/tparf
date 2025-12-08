@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ChevronDown, ChevronUp, Package } from 'lucide-react';
 import type { Order, OrderItem as OrderItemType } from '@/shared/api/services/orders';
 import { formatDate } from '@/shared/lib/utils';
+import Image from 'next/image';
 
 interface OrderItemProps {
     order: Order;
@@ -77,8 +78,10 @@ export default function OrderItem({ order }: OrderItemProps) {
                             {order.items.map((item: OrderItemType) => (
                                 <div key={item.id} className="flex items-center gap-3 p-4 bg-white rounded-xl border hover:shadow-sm transition-all">
                                     {item.images[0] && (
-                                        <img
+                                        <Image
                                             src={item.images[0].imageUrl}
+                                            width={100}
+                                            height={100}
                                             alt={item.productName || 'Товар'}
                                             className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
                                         />
@@ -97,7 +100,7 @@ export default function OrderItem({ order }: OrderItemProps) {
                                             {formatPrice(item.totalPrice)} ₽
                                         </p>
                                         <p className="text-sm text-gray-500">
-                                            {item.quantity} × {formatPrice(item.price)} ₽
+                                            {item.quantity} × {formatPrice(item.unitPrice)} ₽
                                         </p>
                                     </div>
                                 </div>

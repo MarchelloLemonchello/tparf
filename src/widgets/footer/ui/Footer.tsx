@@ -10,7 +10,12 @@ export function Footer() {
                 {/* Блок бренда */}
                 <div className="space-y-3">
                     <Link href="/" aria-label="На главную" className="inline-flex items-center gap-2">
-                        <Image src="/Logo.png" alt="Логотип" width={140} height={36} />
+                        <Image
+                            src="/Logo.png"
+                            alt="Логотип"
+                            width={140}
+                            height={36}
+                        />
                     </Link>
                     <p className="text-sm opacity-80">
                         Торгово‑промышленное агентство. Оборудование и решения для перекачки и учёта ГСМ.

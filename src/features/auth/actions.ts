@@ -1,4 +1,3 @@
-// src/features/auth/actions.ts
 'use server';
 
 import { cookies } from 'next/headers';
@@ -11,13 +10,14 @@ export type RegisterState = { ok: boolean; errors?: Record<string, string>; mess
 export type LoginState = { ok: boolean; errors?: Record<string, string>; message?: string };
 
 function isZodError(e: unknown): e is ZodError {
-    return !!e && typeof e === 'object' && 'issues' in (e as any) && Array.isArray((e as any).issues);
+    return !!e && typeof e === 'object' && 'issues' in (e as Record<string, unknown>) && Array.isArray((e as Record<string, unknown>).issues);
 }
+
 function extractErrors(err: ZodError) {
     const errors: Record<string, string> = {};
     for (const i of err.issues) {
         const first = Array.isArray(i.path) ? i.path[0] : undefined;
-        const key = typeof first === 'string' ? (first as unknown as string) : 'form';
+        const key = typeof first === 'string' ? first : 'form';
         if (!errors[key]) errors[key] = i.message;
     }
     return errors;
@@ -30,8 +30,8 @@ export async function registerAction(_: RegisterState, formData: FormData): Prom
         const parsed = registerSchema.pick({
             email: true,
             password: true,
-            companyName: true,  // новое поле
-            inn: true,         // новое поле
+            companyName: true,
+            inn: true,
             confirm: true,
             consent: true,
         }).parse({
@@ -43,12 +43,11 @@ export async function registerAction(_: RegisterState, formData: FormData): Prom
             consent: formData.get('consent') === 'on',
         });
 
-        // Вызов API регистрации с новыми полями
         const res = await register({
             email: parsed.email,
             password: parsed.password,
-            companyName: parsed.companyName,  // новое поле
-            inn: parsed.inn,                  // новое поле
+            companyName: parsed.companyName,
+            inn: parsed.inn,
         });
         token = res.token;
 
@@ -70,7 +69,6 @@ export async function registerAction(_: RegisterState, formData: FormData): Prom
 
     redirect('/cart');
 }
-
 
 export async function loginAction(_: LoginState, formData: FormData): Promise<LoginState> {
     let token: string | null = null;
@@ -94,19 +92,19 @@ export async function loginAction(_: LoginState, formData: FormData): Promise<Lo
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24 * 7,
         });
-    } catch (err: any) {
-        if (err?.response) {
+    } catch (err: unknown) {
+        // ✅ Исправлено: типизированный доступ к ошибке Axios без any
+        if (err && typeof err === 'object' && 'response' in err) {
+            const axiosError = err as { response?: { data?: string | { message?: string } } };
             const text =
-                typeof err.response.data === 'string'
-                    ? err.response.data
-                    : err.response.data?.message || '';
+                typeof axiosError.response?.data === 'string'
+                    ? axiosError.response.data
+                    : axiosError.response?.data?.message || '';
             return { ok: false, message: text || 'Не удалось выполнить вход. Проверьте email и пароль.' };
         }
         if (isZodError(err)) return { ok: false, errors: extractErrors(err) };
         return { ok: false, message: 'Ошибка сети или сервера. Повторите попытку.' };
     }
 
-    // Успешный кейс: выполняем редирект ВНЕ try/catch, чтобы не попасть в catch
     redirect('/cart');
 }
-

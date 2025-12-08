@@ -24,7 +24,7 @@ interface ProductInfoClientProps {
     currencyCode: string;
     brandName?: string;
     cartInfo: CartInfo;
-    user: any;
+    user: unknown;
 }
 
 export function ProductInfoClient({
@@ -150,7 +150,7 @@ export function ProductInfoClient({
 
                 // ✅ Перенаправляем на страницу заказов
                 router.push('/orders');
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error('Ошибка создания заказа:', error);
                 toast.error(error.response?.data?.message || 'Ошибка при создании заказа');
             }
