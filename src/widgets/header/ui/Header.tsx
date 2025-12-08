@@ -32,17 +32,17 @@ export function Header({ user }: HeaderProps) {
                     </Link>
                 </nav>
                 <div className="flex justify-end items-center">
-                    <nav className={s.nav}>
-                        <Link href="/about" className="hover:underline">
-                            О компании
-                        </Link>
-                        <Link href="/contacts" className="hover:underline">
-                            Контакты
-                        </Link>
-                        <Link href="/support" className="hover:underline">
-                            Поддержка
-                        </Link>
-                    </nav>
+                    {/*<nav className={s.nav}>*/}
+                    {/*    <Link href="/about" className="hover:underline">*/}
+                    {/*        О компании*/}
+                    {/*    </Link>*/}
+                    {/*    <Link href="/contacts" className="hover:underline">*/}
+                    {/*        Контакты*/}
+                    {/*    </Link>*/}
+                    {/*    <Link href="/support" className="hover:underline">*/}
+                    {/*        Поддержка*/}
+                    {/*    </Link>*/}
+                    {/*</nav>*/}
                     <HeaderAuthButton user={user} />
                 </div>
             </div>

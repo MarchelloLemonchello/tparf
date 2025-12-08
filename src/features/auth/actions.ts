@@ -30,24 +30,25 @@ export async function registerAction(_: RegisterState, formData: FormData): Prom
         const parsed = registerSchema.pick({
             email: true,
             password: true,
-            firstName: true,
-            lastName: true,
+            companyName: true,  // новое поле
+            inn: true,         // новое поле
             confirm: true,
             consent: true,
         }).parse({
             email: formData.get('email'),
             password: formData.get('password'),
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
+            companyName: formData.get('companyName'),
+            inn: formData.get('inn'),
             confirm: formData.get('confirm'),
             consent: formData.get('consent') === 'on',
         });
 
+        // Вызов API регистрации с новыми полями
         const res = await register({
             email: parsed.email,
             password: parsed.password,
-            firstName: parsed.firstName,
-            lastName: parsed.lastName,
+            companyName: parsed.companyName,  // новое поле
+            inn: parsed.inn,                  // новое поле
         });
         token = res.token;
 
@@ -66,7 +67,7 @@ export async function registerAction(_: RegisterState, formData: FormData): Prom
         if (isZodError(err)) return { ok: false, errors: extractErrors(err) };
         return { ok: false, message: 'Ошибка сети или сервера. Повторите попытку.' };
     }
-    // Выполнение редиректа после успешной регистрации и установки cookie
+
     redirect('/cart');
 }
 

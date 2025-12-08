@@ -14,45 +14,81 @@ export function RegisterForm() {
     return (
         <>
             <form action={formAction} className="space-y-4">
+                <div>
+                    <label htmlFor="companyName" className="block text-sm mb-1">
+                        Название компании *
+                    </label>
+                    <input
+                        id="companyName"
+                        name="companyName"
+                        required
+                        className="w-full rounded border p-2"
+                    />
+                    {state.errors?.companyName && <p className="text-sm text-red-600">{state.errors.companyName}</p>}
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label htmlFor="firstName" className="block text-sm mb-1">
-                            Имя
+                        <label htmlFor="inn" className="block text-sm mb-1">
+                            ИНН *
                         </label>
-                        <input id="firstName" name="firstName" className="w-full rounded border p-2" />
-                        {state.errors?.firstName && <p className="text-sm text-red-600">{state.errors.firstName}</p>}
+                        <input
+                            id="inn"
+                            name="inn"
+                            type="tel"
+                            pattern="[0-9]{10}"
+                            maxLength={10}
+                            inputMode="numeric"
+                            placeholder="1234567890"
+                            required
+                            className="w-full rounded border p-2"
+                        />
+                        {state.errors?.inn && <p className="text-sm text-red-600">{state.errors.inn}</p>}
                     </div>
 
                     <div>
-                        <label htmlFor="lastName" className="block text-sm mb-1">
-                            Фамилия
+                        <label htmlFor="email" className="block text-sm mb-1">
+                            Email *
                         </label>
-                        <input id="lastName" name="lastName" className="w-full rounded border p-2" />
-                        {state.errors?.lastName && <p className="text-sm text-red-600">{state.errors.lastName}</p>}
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            className="w-full rounded border p-2"
+                        />
+                        {state.errors?.email && <p className="text-sm text-red-600">{state.errors.email}</p>}
                     </div>
                 </div>
 
-                <div>
-                    <label htmlFor="email" className="block text-sm mb-1">
-                        Email
-                    </label>
-                    <input type="email" id="email" name="email" className="w-full rounded border p-2" />
-                    {state.errors?.email && <p className="text-sm text-red-600">{state.errors.email}</p>}
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label htmlFor="password" className="block text-sm mb-1">
+                            Пароль *
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            className="w-full rounded border p-2"
+                        />
+                        {state.errors?.password && <p className="text-sm text-red-600">{state.errors.password}</p>}
+                    </div>
 
-                <div>
-                    <label htmlFor="password" className="block text-sm mb-1">
-                        Пароль
-                    </label>
-                    <input type="password" id="password" name="password" className="w-full rounded border p-2" />
-                    {state.errors?.password && <p className="text-sm text-red-600">{state.errors.password}</p>}
-                </div>
-                <div>
-                    <label htmlFor="confirm" className="block text-sm mb-1">
-                        Повторите пароль
-                    </label>
-                    <input type="password" id="confirm" name="confirm" className="w-full rounded border p-2" />
-                    {state.errors?.confirm && <p className="text-sm text-red-600">{state.errors.confirm}</p>}
+                    <div>
+                        <label htmlFor="confirm" className="block text-sm mb-1">
+                            Повторите пароль *
+                        </label>
+                        <input
+                            type="password"
+                            id="confirm"
+                            name="confirm"
+                            required
+                            className="w-full rounded border p-2"
+                        />
+                        {state.errors?.confirm && <p className="text-sm text-red-600">{state.errors.confirm}</p>}
+                    </div>
                 </div>
 
                 <label className="flex items-center gap-2 text-sm">

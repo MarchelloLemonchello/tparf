@@ -16,7 +16,7 @@ export function CategoryItem({ id, name, parentLevel, childrenCount, imageUrl }:
             <CategoryCard
                 id={id}
                 name={name}
-                subtitle={typeof childrenCount === 'number' ? `Подкатегорий: ${childrenCount}` : undefined}
+                subtitle={typeof childrenCount === 'number' && childrenCount != 0 ? `Подкатегорий: ${childrenCount}` : undefined}
                 imageUrl={imageUrl}
             />
         );

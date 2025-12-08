@@ -9,8 +9,8 @@ export type LoginResponse = { token: string };
 export type RegisterPayload = {
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    companyName: string;  // новое поле вместо firstName/lastName
+    inn: string;          // новое поле
 };
 
 export type RegisterResponse = {

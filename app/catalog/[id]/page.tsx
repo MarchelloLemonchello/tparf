@@ -35,8 +35,7 @@ export default async function CategoryByIdPage({
         childrenCount: child.children?.length ?? undefined,
         imageUrl: child.logoUrl ?? null, // добавлено
     }));
-    // console.log('items')
-    // console.log(categoryItems)
+
     // Читаем пагинацию из URL
     const page = Number(searchParams.Page ?? 1);
     const pageSize = Number(searchParams.PageSize ?? 20);

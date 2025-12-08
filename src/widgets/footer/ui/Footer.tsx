@@ -22,9 +22,9 @@ export function Footer() {
                     <div className="font-medium mb-3">Разделы</div>
                     <ul className="space-y-2 text-sm">
                         <li><Link href="/catalog" className="hover:underline">Каталог</Link></li>
-                        <li><Link href="/about" className="hover:underline">О компании</Link></li>
-                        <li><Link href="/contacts" className="hover:underline">Контакты</Link></li>
-                        <li><Link href="/support" className="hover:underline">Поддержка</Link></li>
+                        {/*<li><Link href="/about" className="hover:underline">О компании</Link></li>*/}
+                        {/*<li><Link href="/contacts" className="hover:underline">Контакты</Link></li>*/}
+                        {/*<li><Link href="/support" className="hover:underline">Поддержка</Link></li>*/}
                     </ul>
                 </div>
 
@@ -42,11 +42,11 @@ export function Footer() {
                 {/* Правовая информация */}
                 <div>
                     <div className="font-medium mb-3">Информация</div>
-                    <ul className="space-y-2 text-sm">
-                        <li><Link href="/privacy" className="hover:underline">Политика конфиденциальности</Link></li>
-                        <li><Link href="/terms" className="hover:underline">Пользовательское соглашение</Link></li>
-                        <li><Link href="/docs" className="hover:underline">Документы</Link></li>
-                    </ul>
+                    {/*<ul className="space-y-2 text-sm">*/}
+                    {/*    <li><Link href="/privacy" className="hover:underline">Политика конфиденциальности</Link></li>*/}
+                    {/*    <li><Link href="/terms" className="hover:underline">Пользовательское соглашение</Link></li>*/}
+                    {/*    <li><Link href="/docs" className="hover:underline">Документы</Link></li>*/}
+                    {/*</ul>*/}
                 </div>
             </div>
 
