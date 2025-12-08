@@ -70,6 +70,8 @@ export type User = {
     emailConfirmed: boolean;
 };
 
+export type UserWithToken = User & { token: string };
+
 export async function fetchMeServer(token: string): Promise<User> {
     const { data } = await api.get<User>('auth/me', {
         headers: { Authorization: `Bearer ${token}` },

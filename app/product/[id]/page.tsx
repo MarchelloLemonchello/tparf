@@ -11,13 +11,11 @@ import { ProductCharacteristics } from '@/entities/product/ui/ProductCharacteris
 
 export const revalidate = 300;
 
-// ✅ Правильная типизация для Next.js 15+
 interface PageProps {
     params: Promise<{ id: string }>;
 }
 
 export default async function ProductPage({ params }: PageProps) {
-    // ✅ Await для params
     const { id } = await params;
 
     let product;
@@ -31,33 +29,27 @@ export default async function ProductPage({ params }: PageProps) {
         throw e;
     }
 
-    // ✅ Проверяем авторизацию и получаем корзину
     const user = await getUserFromCookie();
     if (user) {
         try {
-            const cart = await getCart(user.token); //
-            // Ищем товар в корзине
+            const cart = await getCart(user.token);
             const cartItem = cart.items.find(item => item.productId === id);
             initialCartInfo = cartItem
                 ? { inCart: true, quantity: cartItem.quantity }
                 : { inCart: false, quantity: 0 };
         } catch (error) {
             console.error('Ошибка загрузки корзины:', error);
-            // Если ошибка - используем cartInfo из product
         }
     }
 
-    // Объединяем информацию о корзине
     const finalCartInfo = product.cartInfo || initialCartInfo;
 
-    // Берём крошки из первой категории
     const categories = product.categories ?? [];
     const pathItems = categories[0]?.pathItems ?? [];
     const baseCrumbs = pathItems.map((pi) => ({ id: pi.id, title: pi.name }));
     const crumbs = [...baseCrumbs, { id: product.id, title: product.name, isCurrent: true }];
 
     const images = product.images ?? [];
-    const mainImage = images.find((i) => i.isMain)?.imageUrl ?? images[0]?.imageUrl;
 
     return (
         <section className="mx-auto max-w-7xl px-4 py-8">
@@ -65,14 +57,14 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div className="grid gap-8 lg:grid-cols-2">
                 <ProductGallery images={images} alt={product.name} />
-                {/* ✅ Передаем данные в клиентский компонент */}
+                {/* ✅ Передаем brandName || undefined вместо null */}
                 <ProductInfoClient
                     productId={product.id}
                     name={product.name}
                     sku={product.sku}
                     price={product.price}
                     currencyCode={product.currencyCode}
-                    brandName={product.brandName}
+                    brandName={product.brandName ?? undefined}
                     cartInfo={finalCartInfo}
                     user={user}
                 />

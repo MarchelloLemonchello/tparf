@@ -1,11 +1,11 @@
 // app/catalog/[id]/page.tsx
 import { notFound } from 'next/navigation';
-import { fetchCategoryById } from '@/shared/api/services/categories';
-import { fetchProductsByCategoryId } from '@/shared/api/services/products';
-import { Breadcrumbs } from '@/widgets/breadcrumbs/ui/Breadcrumbs';
-import { CategoryGrid } from '@/entities/category/ui/CategoryGrid';
-import { ProductGrid } from '@/entities/product/ui/ProductGrid';
-import { Pagination } from '@/widgets/pagination/ui/Pagination';
+import { fetchCategoryById } from '../../../src/shared/api/services/categories';
+import { fetchProductsByCategoryId } from '../../../src/shared/api/services/products';
+import { Breadcrumbs } from '../../../src/widgets/breadcrumbs/ui/Breadcrumbs';
+import { CategoryGrid } from '../../../src/entities/category/ui/CategoryGrid';
+import { ProductGrid } from '../../../src/entities/product/ui/ProductGrid';
+import { Pagination } from '../../../src/widgets/pagination/ui/Pagination';
 
 export const revalidate = 300;
 
