@@ -8,12 +8,64 @@ import { ProductGallery } from '@/entities/product/ui/ProductGallery';
 import { ProductInfoClient } from '@/entities/product/ui/ProductInfoClient';
 import { ProductDescription } from '@/entities/product/ui/ProductDescription';
 import { ProductCharacteristics } from '@/entities/product/ui/ProductCharacteristics';
+import type { Metadata } from 'next';
 
 export const revalidate = 300;
 
 interface PageProps {
     params: Promise<{ id: string }>;
 }
+
+
+// динамический metadata для OG
+export async function generateMetadata(
+    { params }: PageProps
+): Promise<Metadata> {
+    const { id } = await params;
+    const product = await fetchProductById(id);
+
+    const categories = product.categories ?? [];
+    const lastCategory = categories[categories.length - 1];
+    const categoryName = lastCategory?.name;
+
+    const firstImage =
+        product.images?.find(i => i.isMain)?.imageUrl ??
+        product.images?.[0]?.imageUrl;
+
+    // базовый URL: либо домен, либо IP
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+    return {
+        title: product.name,
+        description: categoryName
+            ? `${product.name} — ${categoryName}`
+            : product.name,
+        openGraph: {
+            title: product.name,
+            description: categoryName
+                ? `${product.name} — ${categoryName}`
+                : product.name,
+            url: `${baseUrl}/product/${id}`,
+            images: firstImage ? [firstImage] : [],
+        },
+        // по желанию: twitter-карта
+        twitter: {
+            card: 'summary_large_image',
+            title: product.name,
+            description: categoryName
+                ? `${product.name} — ${categoryName}`
+                : product.name,
+            images: firstImage
+                ? [
+                    firstImage.startsWith('http')
+                        ? firstImage
+                        : `${baseUrl}${firstImage}`,
+                ]
+                : [],
+        },
+    };
+}
+
 
 export default async function ProductPage({ params }: PageProps) {
     const { id } = await params;
