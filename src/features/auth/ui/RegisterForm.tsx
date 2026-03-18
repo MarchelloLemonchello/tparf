@@ -99,7 +99,7 @@ export function RegisterForm() {
                         name="consent"
                         onChange={(e) => setConsentChecked(e.target.checked)}
                     />
-                    <span>Даю свое согласие на обработку персональных данных</span>
+                    <span>Даю согласие на обработку данных компании</span>
                 </label>
                 {state.errors?.consent && <p className="text-sm text-red-600">{state.errors.consent}</p>}
 

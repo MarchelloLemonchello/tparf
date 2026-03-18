@@ -14,8 +14,8 @@ export function Hero() {
             <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
 
             <div className="relative mx-auto max-w-7xl px-4 py-24 md:py-32">
-                <h1 className="max-w-4xl text-white text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                    Профессиональные инструменты и оборудование для строительства, ремонта и производства
+                <h1 className="max-w-3xl text-white text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
+                    ТОРГОВО-ПРОМЫШЛЕННОЕ АГЕНТСТВО - комплексное обеспечение предприятий на территории Российской Федерации и экспорт продукции на мировой рынок
                 </h1>
 
                 <div className="mt-8">

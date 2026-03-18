@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { HeaderAuthButton } from './HeaderAuthButton';
 import s from './Header.module.css';
 import Image from 'next/image';
+import {SearchInput} from "@/features/SearchInput/ui/SearchInput";
 
 export type User = {
     id: string;
@@ -37,18 +38,20 @@ export function Header({ user }: HeaderProps) {
                         каталог
                     </Link>
                 </nav>
+                <SearchInput className="mx-4 flex-1 max-w-md" />
+
                 <div className="flex justify-end items-center">
-                    {/*<nav className={s.nav}>*/}
-                    {/*    <Link href="/about" className="hover:underline">*/}
-                    {/*        О компании*/}
-                    {/*    </Link>*/}
-                    {/*    <Link href="/contacts" className="hover:underline">*/}
-                    {/*        Контакты*/}
-                    {/*    </Link>*/}
-                    {/*    <Link href="/support" className="hover:underline">*/}
-                    {/*        Поддержка*/}
-                    {/*    </Link>*/}
-                    {/*</nav>*/}
+                    <nav className={s.nav}>
+                        <Link href="/about" className="hover:underline">
+                            О компании
+                        </Link>
+                        <Link href="/contacts" className="hover:underline">
+                            Контакты
+                        </Link>
+                        <Link href="/support" className="hover:underline">
+                            Поддержка
+                        </Link>
+                    </nav>
                     <HeaderAuthButton user={user} />
                 </div>
             </div>
